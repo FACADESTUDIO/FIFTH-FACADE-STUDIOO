@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fifth Facade Studio — Architectural Consultancy, Ahmedabad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Raleway:wght@200;300;400;500;600&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#080808;--deep:#0e0e0e;--panel:#141414;--card:#1a1a1a;
+  --border:rgba(255,255,255,0.07);--white:#ffffff;--off:#e8e8e8;
+  --muted:rgba(255,255,255,0.38);--subtle:rgba(255,255,255,0.12);
+  --gold:#c9a84c;--gold2:#e2c97e;--goldm:rgba(201,168,76,0.1);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Raleway',sans-serif;
+  --caps:'Josefin Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--sans);overflow-x:hidden;cursor:none}
+#cur{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:screen}
+#cur2{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(201,168,76,.45);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s}
+
+/* PRELOADER */
+#loader{position:fixed;inset:0;background:var(--black);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s ease,visibility .9s ease}
+#loader.hide{opacity:0;visibility:hidden}
+.ld-name{font-family:var(--serif);font-size:1.1rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s ease .4s forwards}
+.ld-bar-bg{width:220px;height:1px;background:rgba(255,255,255,.08)}
+.ld-bar{height:100%;width:0;background:var(--gold);animation:loadBar 2s cubic-bezier(.4,0,.2,1) forwards}
+.ld-txt{font-family:var(--caps);font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-top:.9rem;opacity:0;animation:fadeUp .6s ease .7s forwards}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.8rem 5vw;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,backdrop-filter .5s}
+nav.s{padding:1.1rem 5vw;background:rgba(8,8,8,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nbrand{display:flex;align-items:center;gap:.9rem;text-decoration:none}
+.ntext{display:flex;flex-direction:column;gap:2px}
+.nname{font-family:var(--caps);font-size:.75rem;font-weight:300;letter-spacing:.32em;color:var(--white);text-transform:uppercase}
+.nsub{font-family:var(--caps);font-size:.46rem;font-weight:100;letter-spacing:.38em;color:var(--gold);text-transform:uppercase}
+.nlinks{display:flex;gap:2.2rem;list-style:none}
+.nlinks a{font-family:var(--caps);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative}
+.nlinks a::after{content:'';position:absolute;bottom:-4px;left:50%;right:50%;height:1px;background:var(--gold);transition:left .3s,right .3s}
+.nlinks a:hover{color:var(--white)}
+.nlinks a:hover::after{left:0;right:0}
+.ncta{font-family:var(--caps);font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--black);background:var(--gold);padding:.65rem 1.5rem;text-decoration:none;transition:background .3s,transform .2s}
+.ncta:hover{background:var(--gold2);transform:translateY(-1px)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.ham span{display:block;width:22px;height:1px;background:var(--white);transition:.3s}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 5vw 9vh}
+.hbg{position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0c 0%,#080808 50%,#0a0908 100%)}
+.hgrid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);background-size:70px 70px}
+.hgeo{position:absolute;right:-4%;top:50%;transform:translateY(-50%);width:52vw;height:88vh;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.hcont{position:relative;z-index:2;max-width:820px}
+.htag{font-family:var(--caps);font-size:.58rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp .7s ease 2.3s forwards}
+.htag::before{content:'';width:38px;height:1px;background:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,6.8vw,8rem);line-height:1.02;letter-spacing:-.02em;color:var(--white);opacity:0;animation:fadeUp .9s ease 2.5s forwards}
+h1 em{font-style:italic;color:var(--gold)}
+.hdiv{width:0;height:1px;background:var(--gold);margin:2.5rem 0;animation:widen .9s ease 2.9s forwards}
+.hp{font-size:1rem;font-weight:300;line-height:1.9;color:var(--muted);max-width:500px;opacity:0;animation:fadeUp .8s ease 3.1s forwards}
+.hact{display:flex;align-items:center;gap:2rem;margin-top:2.8rem;opacity:0;animation:fadeUp .8s ease 3.3s forwards}
+.bgold{font-family:var(--caps);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--black);background:var(--gold);padding:1rem 2.4rem;text-decoration:none;transition:background .3s,transform .25s,box-shadow .3s;display:inline-block}
+.bgold:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 12px 38px rgba(201,168,76,.22)}
+.bghost{font-family:var(--caps);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--white);border:1px solid var(--subtle);padding:1rem 2.4rem;text-decoration:none;transition:border-color .3s,color .3s,transform .25s;display:inline-block}
+.bghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
+.hscr{position:absolute;right:5vw;bottom:6vh;display:flex;flex-direction:column;align-items:center;gap:.9rem;opacity:0;animation:fadeUp .8s ease 3.5s forwards}
+.hscr span{font-family:var(--caps);font-size:.5rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl}
+.sarr{width:1px;height:55px;background:linear-gradient(var(--gold),transparent);position:relative;overflow:hidden}
+.sarr::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--gold);animation:sdrop 2s ease 4s infinite}
+
+/* MARQUEE */
+.mwrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--panel);padding:.85rem 0;overflow:hidden}
+.minner{display:flex;gap:3.5rem;animation:marquee 32s linear infinite;white-space:nowrap}
+.mi{font-family:var(--caps);font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:1.4rem;flex-shrink:0}
+.md{width:3px;height:3px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* SECTION COMMON */
+.slabel{font-family:var(--caps);font-size:.54rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.8rem;margin-bottom:2.8rem}
+.slabel::before{content:'';width:26px;height:1px;background:var(--gold)}
+h2.sh{font-family:var(--serif);font-weight:400;font-size:clamp(2.2rem,4vw,4.4rem);line-height:1.08;letter-spacing:-.015em;color:var(--white)}
+h2.sh em{font-style:italic;color:var(--gold)}
+.rev{opacity:0;transform:translateY(30px);transition:opacity .85s ease,transform .85s ease}
+.rev.on{opacity:1;transform:translateY(0)}
+
+/* ABOUT */
+#about{padding:10rem 5vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:start}
+.astk{position:sticky;top:9rem}
+.abody{font-size:1.02rem;font-weight:300;line-height:1.95;color:rgba(255,255,255,.58);margin-top:2.5rem}
+.abody p+p{margin-top:1.3rem}
+.abody strong{color:var(--white);font-weight:500}
+.acred{display:flex;gap:2.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}
+.crd{display:flex;flex-direction:column;gap:.3rem}
+.cv{font-family:var(--serif);font-size:2.1rem;font-weight:400;color:var(--gold)}
+.cl{font-family:var(--caps);font-size:.5rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.prins{padding-top:4.5rem}
+.pi{border-top:1px solid var(--border);padding:1.9rem 0;display:grid;grid-template-columns:34px 1fr;gap:1.4rem;opacity:0;transform:translateX(18px);transition:opacity .7s ease,transform .7s ease}
+.pi.on{opacity:1;transform:translateX(0)}
+.pi:last-child{border-bottom:1px solid var(--border)}
+.pidx{font-family:var(--caps);font-size:.48rem;letter-spacing:.2em;color:var(--gold);padding-top:.22rem}
+.ptit{font-family:var(--sans);font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin-bottom:.45rem}
+.pdsc{font-size:.88rem;font-weight:300;line-height:1.75;color:var(--muted)}
+
+/* QUOTE BAND */
+.qband{background:var(--gold);padding:1.6rem 5vw;display:flex;justify-content:center}
+.qband p{font-family:var(--serif);font-style:italic;font-size:1.18rem;font-weight:400;color:var(--black);text-align:center;max-width:900px;line-height:1.5}
+
+/* SERVICES */
+#services{padding:10rem 5vw}
+.stop{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:end;margin-bottom:5.5rem}
+.sintro{font-size:.97rem;font-weight:300;line-height:1.9;color:var(--muted)}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr)}
+.svc{padding:2.8rem 2.2rem;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .45s;cursor:default}
+.svc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.07) 0%,transparent 55%);opacity:0;transition:opacity .4s}
+.svc:hover{background:var(--card)}
+.svc:hover::before{opacity:1}
+.sno{font-family:var(--caps);font-size:.46rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:1.8rem;display:block}
+.sico{margin-bottom:1.6rem}
+.stit{font-family:var(--sans);font-size:.83rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:.9rem;line-height:1.4}
+.sdsc{font-size:.87rem;font-weight:300;line-height:1.75;color:var(--muted)}
+.sarrow{position:absolute;bottom:2rem;right:2rem;font-size:.85rem;color:var(--gold);opacity:0;transform:translate(-5px,5px);transition:opacity .3s,transform .3s}
+.svc:hover .sarrow{opacity:1;transform:translate(0,0)}
+
+/* FOCUS */
+#focus{padding:10rem 5vw;background:var(--deep)}
+.ftop{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:end;margin-bottom:5rem}
+.flist{display:flex;flex-direction:column}
+.fi{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:2.5rem;padding:2.4rem 0;border-bottom:1px solid var(--border);opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.fi:first-child{border-top:1px solid var(--border)}
+.fi.on{opacity:1;transform:translateY(0)}
+.fnum{font-family:var(--serif);font-size:3.2rem;font-weight:400;color:rgba(201,168,76,.16);line-height:1}
+.ftit{font-family:var(--sans);font-size:.97rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--white);margin-bottom:.55rem}
+.fdsc{font-size:.89rem;font-weight:300;line-height:1.75;color:var(--muted)}
+.ftag{font-family:var(--caps);font-size:.48rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.28);padding:.38rem .85rem;white-space:nowrap;opacity:0;transition:opacity .3s}
+.fi:hover .ftag{opacity:1}
+
+/* APPROACH */
+#approach{padding:10rem 5vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center}
+.adiag{position:relative;height:510px}
+.abody2{font-size:1.02rem;font-weight:300;line-height:1.95;color:rgba(255,255,255,.58);margin-top:2rem}
+.abody2 em{color:var(--gold);font-style:italic}
+blockquote.aq{margin-top:2.8rem;padding:2rem 2.4rem;border-left:2px solid var(--gold);background:var(--panel);font-family:var(--serif);font-size:1.3rem;font-weight:400;font-style:italic;line-height:1.55;color:var(--off)}
+
+/* VISION */
+#vision{padding:12rem 5vw;text-align:center;position:relative;overflow:hidden;background:var(--panel)}
+#vision::before{content:'5';position:absolute;font-family:var(--serif);font-size:50vw;font-weight:700;color:rgba(255,255,255,.012);top:50%;left:50%;transform:translate(-50%,-50%);line-height:1;pointer-events:none;letter-spacing:-.05em}
+.vsub{font-family:var(--caps);font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem}
+.vtxt{font-family:var(--serif);font-size:clamp(1.6rem,3.2vw,3rem);font-weight:400;line-height:1.45;color:var(--white);max-width:860px;margin:0 auto;letter-spacing:-.01em}
+.vtxt em{color:var(--gold);font-style:italic}
+.vpos{margin-top:3.5rem;font-family:var(--caps);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);line-height:2;max-width:680px;margin-left:auto;margin-right:auto}
+
+/* FOUNDER */
+#founder{padding:10rem 5vw;display:grid;grid-template-columns:1fr 1.1fr;gap:8vw;align-items:center}
+.fcard{position:relative;aspect-ratio:3/4;background:var(--card);border:1px solid var(--border);overflow:hidden}
+.fname{font-family:var(--serif);font-size:clamp(1.8rem,3vw,3.2rem);font-weight:400;color:var(--white);letter-spacing:-.01em;margin-top:2rem}
+.fname em{color:var(--gold);font-style:italic}
+.frole{font-family:var(--caps);font-size:.58rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-top:.45rem}
+.fbio{font-size:.97rem;font-weight:300;line-height:1.9;color:rgba(255,255,255,.55);margin-top:1.8rem}
+.fbio p+p{margin-top:1.1rem}
+.fcts{margin-top:2.5rem;display:flex;flex-direction:column;gap:.85rem;padding-top:2rem;border-top:1px solid var(--border)}
+.fc{display:flex;align-items:center;gap:1rem}
+.fcl{font-family:var(--caps);font-size:.48rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);min-width:58px}
+.fcv{font-size:.87rem;font-weight:300;color:var(--off)}
+.fcv a{color:var(--off);text-decoration:none;transition:color .25s}
+.fcv a:hover{color:var(--gold)}
+
+/* CONTACT */
+#contact{padding:10rem 5vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;background:var(--deep)}
+.cth{font-family:var(--serif);font-size:clamp(2.2rem,4vw,4.4rem);font-weight:400;line-height:1.1;color:var(--white);margin-top:2rem;letter-spacing:-.01em}
+.cth em{color:var(--gold);font-style:italic}
+.ctp{font-size:.97rem;font-weight:300;line-height:1.9;color:var(--muted);margin-top:1.8rem}
+.ctmeta{margin-top:2.8rem;display:flex;flex-direction:column;gap:1.1rem}
+.cm{display:flex;gap:1.1rem;align-items:flex-start}
+.cml{font-family:var(--caps);font-size:.48rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);min-width:65px;padding-top:.13rem}
+.cmv{font-size:.88rem;font-weight:300;line-height:1.6;color:rgba(255,255,255,.62)}
+.cmv a{color:rgba(255,255,255,.62);text-decoration:none;transition:color .25s}
+.cmv a:hover{color:var(--gold)}
+.cform{padding-top:4.5rem}
+.fg{margin-bottom:1.9rem}
+.fg label{font-family:var(--caps);font-size:.5rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.65rem}
+.fg input,.fg textarea,.fg select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:.85rem 0;font-family:var(--sans);font-size:.93rem;font-weight:300;color:var(--white);outline:none;transition:border-color .3s;-webkit-appearance:none;resize:none}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.16)}
+.fg select{color:rgba(255,255,255,.45)}
+.fg select option{background:var(--panel);color:var(--white)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-bottom-color:var(--gold)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.fsub{font-family:var(--caps);font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:1.05rem 2.8rem;cursor:pointer;transition:background .3s,transform .25s,box-shadow .3s;margin-top:.4rem}
+.fsub:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 32px rgba(201,168,76,.28)}
+#thanks{display:none;font-family:var(--caps);font-size:.58rem;letter-spacing:.2em;color:var(--gold);margin-top:1.1rem}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--border);padding:4.5rem 5vw 3rem}
+.ftop{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:4vw;padding-bottom:3rem;border-bottom:1px solid var(--border)}
+.fbn{font-family:var(--caps);font-size:.73rem;font-weight:300;letter-spacing:.32em;text-transform:uppercase;color:var(--white);margin-top:.9rem}
+.fbt{font-family:var(--serif);font-style:italic;font-size:.98rem;color:var(--gold);margin-top:.35rem}
+.fba{font-size:.84rem;font-weight:300;line-height:1.8;color:var(--muted);margin-top:1.4rem}
+.fct{font-family:var(--caps);font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.flinks a{font-size:.84rem;font-weight:300;color:var(--muted);text-decoration:none;transition:color .25s}
+.flinks a:hover{color:var(--gold)}
+.fbot{display:flex;justify-content:space-between;align-items:center;padding-top:2rem}
+.fcp{font-family:var(--caps);font-size:.46rem;letter-spacing:.16em;color:rgba(255,255,255,.16)}
+
+/* KEYFRAMES */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes widen{from{width:0}to{width:60px}}
+@keyframes loadBar{0%{width:0}100%{width:100%}}
+@keyframes sdrop{0%{top:-100%}100%{top:200%}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* MOBILE */
+@media(max-width:900px){
+  .nlinks,.ncta{display:none}
+  .ham{display:flex}
+  .nlinks.open{display:flex;flex-direction:column;position:fixed;inset:0;background:rgba(8,8,8,.98);justify-content:center;align-items:center;gap:2.5rem;z-index:200}
+  .nlinks.open a{font-size:1rem}
+  #hero{align-items:flex-end;padding:0 5vw 6vh}
+  .hgeo{width:90vw;opacity:.06}
+  #about,#approach,#founder,#contact{grid-template-columns:1fr;padding:6rem 5vw}
+  .astk{position:static}
+  .stop,.ftop2:not(.ftop){grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
+  .stop{grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
+  .ftop{grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
+  .sgrid{grid-template-columns:1fr}
+  .svc{margin:0;border-top:none}
+  .svc:first-child{border-top:1px solid var(--border)}
+  .fi{grid-template-columns:60px 1fr;gap:1.2rem}
+  .ftag{display:none}
+  footer .ftop{grid-template-columns:1fr}
+  .fbot{flex-direction:column;gap:1rem;text-align:center}
+  .frow{grid-template-columns:1fr}
+  #vision{padding:7rem 5vw}
+  #focus{padding:6rem 5vw}
+  #services{padding:6rem 5vw}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- PRELOADER -->
+<div id="loader">
+  <div class="ld-name">Fifth Facade Studio</div>
+  <div class="ld-bar-bg"><div class="ld-bar"></div></div>
+  <div class="ld-txt">Ahmedabad · Est. 2025</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nbrand">
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none">
+      <rect x="1" y="1" width="42" height="42" stroke="rgba(201,168,76,0.22)" stroke-width="0.5"/>
+      <rect x="4" y="4" width="36" height="36" fill="#0e0e0e"/>
+      <rect x="10" y="22" width="24" height="16" fill="#191919" stroke="rgba(201,168,76,0.15)" stroke-width="0.5"/>
+      <path d="M8 22 L22 10 L36 22" fill="#c9a84c"/>
+      <line x1="15" y1="22" x2="22" y2="10" stroke="#0e0e0e" stroke-width="0.7" opacity="0.5"/>
+      <line x1="29" y1="22" x2="22" y2="10" stroke="#0e0e0e" stroke-width="0.7" opacity="0.5"/>
+      <rect x="12" y="25" width="4" height="4" fill="rgba(201,168,76,0.4)"/>
+      <rect x="20" y="25" width="4" height="4" fill="rgba(201,168,76,0.18)"/>
+      <rect x="28" y="25" width="4" height="4" fill="rgba(201,168,76,0.18)"/>
+      <rect x="18" y="31" width="8" height="7" fill="rgba(201,168,76,0.55)"/>
+      <path d="M4 4 L4 9 M4 4 L9 4" stroke="#c9a84c" stroke-width="1.1"/>
+      <path d="M40 4 L40 9 M40 4 L35 4" stroke="#c9a84c" stroke-width="1.1"/>
+      <path d="M4 40 L4 35 M4 40 L9 40" stroke="#c9a84c" stroke-width="1.1"/>
+      <path d="M40 40 L40 35 M40 40 L35 40" stroke="#c9a84c" stroke-width="1.1"/>
+    </svg>
+    <div class="ntext">
+      <span class="nname">Fifth Facade</span>
+      <span class="nsub">Studio · Architecture</span>
+    </div>
+  </a>
+  <ul class="nlinks" id="nl">
+    <li><a href="#about">Philosophy</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#focus">Focus</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#founder">Studio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="ncta">Start a Project</a>
+  <div class="ham" id="ham" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hbg"></div>
+  <div class="hgrid"></div>
+  <div class="hgeo">
+    <svg viewBox="0 0 600 600" fill="none" width="100%" height="100%" style="opacity:.11">
+      <circle cx="300" cy="300" r="248" stroke="#c9a84c" stroke-width="0.6" stroke-dasharray="7 5"/>
+      <circle cx="300" cy="300" r="188" stroke="#c9a84c" stroke-width="0.4"/>
+      <circle cx="300" cy="300" r="128" stroke="#c9a84c" stroke-width="0.4" stroke-dasharray="4 4"/>
+      <circle cx="300" cy="300" r="68" stroke="#c9a84c" stroke-width="0.6"/>
+      <line x1="52" y1="300" x2="548" y2="300" stroke="#c9a84c" stroke-width="0.35"/>
+      <line x1="300" y1="52" x2="300" y2="548" stroke="#c9a84c" stroke-width="0.35"/>
+      <line x1="125" y1="125" x2="475" y2="475" stroke="#c9a84c" stroke-width="0.25"/>
+      <line x1="475" y1="125" x2="125" y2="475" stroke="#c9a84c" stroke-width="0.25"/>
+      <path d="M100 390 L300 145 L500 390" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+      <rect x="145" y="390" width="310" height="155" stroke="#c9a84c" stroke-width="0.7" fill="none"/>
+      <circle cx="300" cy="300" r="5" fill="#c9a84c"/>
+    </svg>
+  </div>
+  <div class="hcont">
+    <div class="htag">Architectural Consultancy &nbsp;·&nbsp; Ahmedabad &nbsp;·&nbsp; Est. 2025</div>
+    <h1>Where Roofs<br>Become <em>Experience.</em></h1>
+    <div class="hdiv"></div>
+    <p class="hp">Fifth Facade Studio is a design-led consultancy that reimagines the roof as the most expressive layer of built form — creating climate-responsive, human-centered environments where geometry, material, and culture converge.</p>
+    <div class="hact">
+      <a href="#services" class="bgold">Explore Services</a>
+      <a href="#contact" class="bghost">Begin a Project</a>
+    </div>
+  </div>
+  <div class="hscr"><span>Scroll</span><div class="sarr"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mwrap">
+  <div class="minner">
+    <span class="mi"><span class="md"></span>Architectural Design</span>
+    <span class="mi"><span class="md"></span>Roof-Driven Systems</span>
+    <span class="mi"><span class="md"></span>Bioclimatic Consultation</span>
+    <span class="mi"><span class="md"></span>Material Integrity</span>
+    <span class="mi"><span class="md"></span>Yash Chandwani</span>
+    <span class="mi"><span class="md"></span>Ahmedabad · India</span>
+    <span class="mi"><span class="md"></span>Fifth Facade Studio</span>
+    <span class="mi"><span class="md"></span>Climate Intelligence</span>
+    <span class="mi"><span class="md"></span>Human-Centric Design</span>
+    <span class="mi"><span class="md"></span>The Fifth Facade</span>
+    <span class="mi"><span class="md"></span>Architectural Design</span>
+    <span class="mi"><span class="md"></span>Roof-Driven Systems</span>
+    <span class="mi"><span class="md"></span>Bioclimatic Consultation</span>
+    <span class="mi"><span class="md"></span>Material Integrity</span>
+    <span class="mi"><span class="md"></span>Yash Chandwani</span>
+    <span class="mi"><span class="md"></span>Ahmedabad · India</span>
+    <span class="mi"><span class="md"></span>Fifth Facade Studio</span>
+    <span class="mi"><span class="md"></span>Climate Intelligence</span>
+    <span class="mi"><span class="md"></span>Human-Centric Design</span>
+    <span class="mi"><span class="md"></span>The Fifth Facade</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="astk">
+    <div class="slabel rev">Philosophy <span style="color:var(--muted);margin-left:auto;font-size:.48rem">01 / 06</span></div>
+    <h2 class="sh rev">Design-led.<br><em>Climate-wise.</em><br>Human-first.</h2>
+    <div class="abody rev">
+      <p>Fifth Facade Studio is a design-led architectural consultancy that <strong>reimagines the roof as the most expressive layer of built form.</strong> The studio focuses on creating climate-responsive, human-centered environments where geometry, material, and social interaction converge.</p>
+      <p>Rooted in contextual sensitivity, the practice engages with architecture as both a spatial necessity and a cultural experience — where form, shadow, and airflow tell the story the other four facades cannot.</p>
+    </div>
+    <div class="acred rev">
+      <div class="crd"><span class="cv">2025</span><span class="cl">Founded</span></div>
+      <div class="crd"><span class="cv">5<sup style="font-size:1rem">th</sup></span><span class="cl">Facade Focus</span></div>
+      <div class="crd"><span class="cv">4+</span><span class="cl">Focus Areas</span></div>
+    </div>
+  </div>
+  <div class="prins">
+    <div class="pi"><span class="pidx">01</span><div><div class="ptit">The Roof as Generator</div><p class="pdsc">Treating the roof as the primary design driver — not a secondary covering — elevating it from shelter to architectural protagonist.</p></div></div>
+    <div class="pi" style="transition-delay:.1s"><span class="pidx">02</span><div><div class="ptit">Climate Intelligence</div><p class="pdsc">Designing passive, responsive systems specifically suited to Indian climatic conditions — buildings that breathe with their environment.</p></div></div>
+    <div class="pi" style="transition-delay:.2s"><span class="pidx">03</span><div><div class="ptit">Material Integrity</div><p class="pdsc">Integrating craft, natural textures, and tectonic honesty into every structure — where every joint, surface, and seam speaks with purpose.</p></div></div>
+    <div class="pi" style="transition-delay:.3s"><span class="pidx">04</span><div><div class="ptit">Human-Centric Sociality</div><p class="pdsc">Prioritizing spaces that foster interaction and community engagement — architecture as a catalyst for lived experience.</p></div></div>
+    <div class="pi" style="transition-delay:.4s"><span class="pidx">05</span><div><div class="ptit">Conceptual Depth</div><p class="pdsc">Achieving simplicity through rigorous, context-driven design research — where the visible is entirely shaped by the invisible.</p></div></div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="qband">
+  <p>"By elevating the roof to its rightful status as the Fifth Facade, we manipulate volume, shadow, and airflow — so the roof does not just shelter, it speaks."</p>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="stop">
+    <div>
+      <div class="slabel rev">Services <span style="color:var(--muted);margin-left:auto;font-size:.48rem">02 / 06</span></div>
+      <h2 class="sh rev">What We<br><em>Offer</em></h2>
+    </div>
+    <p class="sintro rev">From first concept to final execution, Fifth Facade Studio provides a full spectrum of architectural services — each grounded in the conviction that the roof is the building's most potent design opportunity.</p>
+  </div>
+  <div class="sgrid">
+    <div class="svc">
+      <span class="sno">SV · 01</span>
+      <div class="sico"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="5" y="17" width="24" height="13" stroke="#c9a84c" stroke-width="1" fill="none"/><path d="M3 17 L17 6 L31 17" stroke="#c9a84c" stroke-width="1.2" fill="none"/><line x1="17" y1="6" x2="17" y2="30" stroke="rgba(201,168,76,.3)" stroke-width=".6"/></svg></div>
+      <div class="stit">Architectural Design Consultancy</div>
+      <p class="sdsc">Full-scale project oversight from concept to execution, with the roof as the primary design variable.</p>
+      <span class="sarrow">↗</span>
+    </div>
+    <div class="svc">
+      <span class="sno">SV · 02</span>
+      <div class="sico"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><polygon points="17,4 31,30 3,30" stroke="#c9a84c" stroke-width="1" fill="none"/><line x1="17" y1="4" x2="17" y2="30" stroke="rgba(201,168,76,.3)" stroke-width=".6" stroke-dasharray="3,2"/><circle cx="17" cy="4" r="2" fill="#c9a84c"/></svg></div>
+      <div class="stit">Concept & Form Development</div>
+      <p class="sdsc">Specialized research into expressive geometries and Fifth Facade systems — the poetry of built form.</p>
+      <span class="sarrow">↗</span>
+    </div>
+    <div class="svc">
+      <span class="sno">SV · 03</span>
+      <div class="sico"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="4" y="4" width="11" height="11" stroke="#c9a84c" stroke-width="1" fill="none"/><rect x="19" y="4" width="11" height="11" stroke="#c9a84c" stroke-width="1" fill="none"/><rect x="4" y="19" width="11" height="11" stroke="#c9a84c" stroke-width="1" fill="none"/><rect x="19" y="19" width="11" height="11" stroke="rgba(201,168,76,.4)" stroke-width="1" fill="rgba(201,168,76,.06)"/></svg></div>
+      <div class="stit">Technical Spatial Planning</div>
+      <p class="sdsc">Optimized layouts for residential, institutional, and commercial sectors — maximum utility, minimum footprint.</p>
+      <span class="sarrow">↗</span>
+    </div>
+    <div class="svc">
+      <span class="sno">SV · 04</span>
+      <div class="sico"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="12" stroke="#c9a84c" stroke-width="1" fill="none"/><path d="M8 22 Q17 9 26 22" stroke="#c9a84c" stroke-width="1.2" fill="none"/><line x1="17" y1="5" x2="17" y2="29" stroke="rgba(201,168,76,.25)" stroke-width=".6" stroke-dasharray="2,3"/></svg></div>
+      <div class="stit">Bioclimatic Consultation</div>
+      <p class="sdsc">Passive cooling, natural lighting, and climate-responsive site analysis — tuned to the Indian subcontinent.</p>
+      <span class="sarrow">↗</span>
+    </div>
+    <div class="svc">
+      <span class="sno">SV · 05</span>
+      <div class="sico"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="5" y="5" width="24" height="24" stroke="#c9a84c" stroke-width="1" fill="none"/><rect x="10" y="10" width="14" height="14" stroke="rgba(201,168,76,.45)" stroke-width=".8" fill="none"/><rect x="15" y="15" width="4" height="4" fill="#c9a84c"/></svg></div>
+      <div class="stit">Interior Experience Design</div>
+      <p class="sdsc">Curating the internal volume as an extension of the architectural shell — where inside and outside breathe as one.</p>
+      <span class="sarrow">↗</span>
+    </div>
+    <div class="svc" style="display:flex;flex-direction:column;justify-content:center;background:var(--goldm);border-color:rgba(201,168,76,.18)">
+      <p style="font-family:var(--serif);font-size:1.2rem;font-style:italic;font-weight:400;color:var(--gold);line-height:1.55">"Every project seeks a precise balance between functional rigor and poetic expression."</p>
+      <a href="#contact" class="bgold" style="margin-top:2rem;font-size:.55rem;display:inline-block">Begin a Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOCUS -->
+<section id="focus">
+  <div class="ftop">
+    <div>
+      <div class="slabel rev">Areas of Focus <span style="color:var(--muted);margin-left:auto;font-size:.48rem">03 / 06</span></div>
+      <h2 class="sh rev">Where We<br>Apply Our <em>Craft</em></h2>
+    </div>
+    <p class="sintro rev">Specialized domains where the Fifth Facade philosophy finds its most powerful expression — from intimate to civic, vernacular to visionary.</p>
+  </div>
+  <div class="flist">
+    <div class="fi"><div class="fnum">01</div><div><div class="ftit">Marketplace &amp; Public Architecture</div><p class="fdsc">Designing village markets, urban bazaars, and community hubs that balance economic flexibility with vibrant social interaction. Architecture as the stage for daily life.</p></div><span class="ftag">Public</span></div>
+    <div class="fi" style="transition-delay:.1s"><div class="fnum">02</div><div><div class="ftit">Roof-Driven Systems</div><p class="fdsc">Exploring sloping, folded, and layered roof typologies that define spatial identity while optimizing light and ventilation — the roof as form-giver and climate regulator.</p></div><span class="ftag">Structural</span></div>
+    <div class="fi" style="transition-delay:.2s"><div class="fnum">03</div><div><div class="ftit">Sustainable &amp; Tectonic Design</div><p class="fdsc">Specializing in natural materials and craft studios using low-impact construction techniques — honoring traditional wisdom through contemporary form.</p></div><span class="ftag">Sustainable</span></div>
+    <div class="fi" style="transition-delay:.3s"><div class="fnum">04</div><div><div class="ftit">High-Efficiency Compact Design</div><p class="fdsc">Strategic spatial planning for clinics, residences, and boutique commercial projects where usability is maximized within limited footprints.</p></div><span class="ftag">Compact</span></div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section id="approach">
+  <div class="adiag">
+    <svg viewBox="0 0 420 520" fill="none" width="100%" height="100%">
+      <rect x="28" y="28" width="364" height="464" stroke="rgba(201,168,76,.06)" stroke-width="1"/>
+      <circle cx="210" cy="262" r="178" stroke="rgba(201,168,76,.1)" stroke-width="1"/>
+      <line x1="32" y1="262" x2="388" y2="262" stroke="rgba(201,168,76,.07)" stroke-width=".6"/>
+      <line x1="210" y1="82" x2="210" y2="442" stroke="rgba(201,168,76,.07)" stroke-width=".6"/>
+      <polygon points="210,102 368,352 52,352" stroke="#c9a84c" stroke-width="1.2" fill="rgba(201,168,76,.035)"/>
+      <line x1="289" y1="227" x2="131" y2="227" stroke="rgba(201,168,76,.18)" stroke-width=".6" stroke-dasharray="4,4"/>
+      <line x1="131" y1="227" x2="210" y2="352" stroke="rgba(201,168,76,.18)" stroke-width=".6" stroke-dasharray="4,4"/>
+      <line x1="210" y1="352" x2="289" y2="227" stroke="rgba(201,168,76,.18)" stroke-width=".6" stroke-dasharray="4,4"/>
+      <circle cx="210" cy="102" r="5.5" fill="#c9a84c"/>
+      <circle cx="210" cy="102" r="13" stroke="#c9a84c" stroke-width=".6" fill="none" opacity=".35"/>
+      <circle cx="368" cy="352" r="5.5" fill="#c9a84c"/>
+      <circle cx="368" cy="352" r="13" stroke="#c9a84c" stroke-width=".6" fill="none" opacity=".35"/>
+      <circle cx="52" cy="352" r="5.5" fill="#c9a84c"/>
+      <circle cx="52" cy="352" r="13" stroke="#c9a84c" stroke-width=".6" fill="none" opacity=".35"/>
+      <circle cx="210" cy="269" r="20" fill="#c9a84c" opacity=".1"/>
+      <circle cx="210" cy="269" r="5.5" fill="#c9a84c"/>
+      <text x="210" y="84" font-family="'Josefin Sans',sans-serif" font-size="8.5" fill="#c9a84c" text-anchor="middle" letter-spacing="4">CLIMATE</text>
+      <text x="392" y="371" font-family="'Josefin Sans',sans-serif" font-size="8.5" fill="#c9a84c" text-anchor="middle" letter-spacing="4">CONTEXT</text>
+      <text x="28" y="371" font-family="'Josefin Sans',sans-serif" font-size="8.5" fill="#c9a84c" text-anchor="middle" letter-spacing="4">CONCEPT</text>
+      <text x="210" y="302" font-family="'Playfair Display',serif" font-size="11.5" fill="rgba(255,255,255,.65)" text-anchor="middle" font-style="italic">Architecture</text>
+      <line x1="210" y1="263" x2="210" y2="102" stroke="rgba(201,168,76,.18)" stroke-width=".6"/>
+      <line x1="210" y1="263" x2="368" y2="352" stroke="rgba(201,168,76,.18)" stroke-width=".6"/>
+      <line x1="210" y1="263" x2="52" y2="352" stroke="rgba(201,168,76,.18)" stroke-width=".6"/>
+      <text x="210" y="490" font-family="'Josefin Sans',sans-serif" font-size="6.5" fill="rgba(201,168,76,.3)" text-anchor="middle" letter-spacing="5">FIFTH FACADE STUDIO · AHMEDABAD</text>
+      <path d="M28 28 L28 48 M28 28 L48 28" stroke="rgba(201,168,76,.3)" stroke-width="1"/>
+      <path d="M392 28 L392 48 M392 28 L372 28" stroke="rgba(201,168,76,.3)" stroke-width="1"/>
+      <path d="M28 492 L28 472 M28 492 L48 492" stroke="rgba(201,168,76,.3)" stroke-width="1"/>
+      <path d="M392 492 L392 472 M392 492 L372 492" stroke="rgba(201,168,76,.3)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div>
+    <div class="slabel rev">Design Approach <span style="color:var(--muted);margin-left:auto;font-size:.48rem">04 / 06</span></div>
+    <h2 class="sh rev">At the<br><em>Intersection</em></h2>
+    <p class="abody2 rev">Architecture at Fifth Facade Studio emerges at the intersection of <em>Climate, Context, and Concept.</em> By elevating the roof to its rightful status as the "Fifth Facade," we manipulate volume, shadow, and airflow to fundamentally transform the user's experience of built space.<br><br>Every project seeks a precise balance between <em>functional rigor</em> and <em>poetic expression</em> — where the pragmatic and the beautiful are not opposites, but inseparable partners.</p>
+    <blockquote class="aq rev">"Rooted in contextual sensitivity, the practice engages with architecture as both spatial necessity and cultural experience."</blockquote>
+  </div>
+</section>
+
+<!-- VISION -->
+<section id="vision">
+  <p class="vsub rev">Vision Statement</p>
+  <p class="vtxt rev">To establish a <em>global benchmark</em> for concept-driven architecture that proves sustainable, climate-responsive design is inseparable from <em>bold architectural identity.</em></p>
+  <p class="vpos rev">Fifth Facade Studio is a specialized architectural practice dedicated to experiential design that is deeply rooted in material honesty, cultural context, and the transformative power of the roof.</p>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="fcard">
+    <svg viewBox="0 0 340 460" fill="none" width="100%" height="100%">
+      <rect x="0" y="0" width="340" height="200" fill="#0d0d0d"/>
+      <rect x="0" y="200" width="340" height="260" fill="#131313"/>
+      <line x1="0" y1="50" x2="340" y2="50" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <line x1="0" y1="100" x2="340" y2="100" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <line x1="0" y1="150" x2="340" y2="150" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <line x1="85" y1="0" x2="85" y2="200" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <line x1="170" y1="0" x2="170" y2="200" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <line x1="255" y1="0" x2="255" y2="200" stroke="rgba(201,168,76,.05)" stroke-width=".6"/>
+      <path d="M38 200 L170 58 L302 200" fill="#c9a84c" opacity=".92"/>
+      <line x1="170" y1="58" x2="170" y2="200" stroke="#0d0d0d" stroke-width="1" opacity=".45"/>
+      <line x1="104" y1="200" x2="170" y2="58" stroke="#0d0d0d" stroke-width=".7" opacity=".3"/>
+      <line x1="236" y1="200" x2="170" y2="58" stroke="#0d0d0d" stroke-width=".7" opacity=".3"/>
+      <circle cx="170" cy="58" r="4.5" fill="rgba(255,255,255,.9)"/>
+      <text x="170" y="318" font-family="'Playfair Display',serif" font-size="50" fill="rgba(201,168,76,.12)" text-anchor="middle" font-weight="700" letter-spacing="-1">YC</text>
+      <text x="170" y="356" font-family="'Playfair Display',serif" font-size="19.5" fill="rgba(255,255,255,.92)" text-anchor="middle" font-weight="400" letter-spacing="1">Yash Chandwani</text>
+      <line x1="118" y1="368" x2="222" y2="368" stroke="#c9a84c" stroke-width="1"/>
+      <text x="170" y="386" font-family="'Josefin Sans',sans-serif" font-size="7.2" fill="#c9a84c" text-anchor="middle" letter-spacing="4">PRINCIPAL ARCHITECT</text>
+      <text x="170" y="420" font-family="'Josefin Sans',sans-serif" font-size="6.2" fill="rgba(255,255,255,.22)" text-anchor="middle" letter-spacing="3">FIFTH FACADE STUDIO · AHMEDABAD · 2025</text>
+      <path d="M10 10 L10 27 M10 10 L27 10" stroke="#c9a84c" stroke-width="1.2"/>
+      <path d="M330 10 L330 27 M330 10 L313 10" stroke="#c9a84c" stroke-width="1.2"/>
+      <path d="M10 450 L10 433 M10 450 L27 450" stroke="#c9a84c" stroke-width="1.2"/>
+      <path d="M330 450 L330 433 M330 450 L313 450" stroke="#c9a84c" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <div>
+    <div class="slabel rev">The Studio <span style="color:var(--muted);margin-left:auto;font-size:.48rem">05 / 06</span></div>
+    <div class="fname rev"><em>Yash</em><br>Chandwani</div>
+    <p class="frole">Principal Architect &amp; Founder · Fifth Facade Studio</p>
+    <div class="fbio rev">
+      <p>Fifth Facade Studio was founded in Ahmedabad in 2025 with a singular conviction: that architecture's most transformative canvas is the one most often overlooked — the roof.</p>
+      <p>The studio operates at the intersection of design research and built practice, developing a body of work that challenges conventional thinking about how buildings meet the sky. Each project is an experiment in making the "fifth facade" the most memorable element of the design.</p>
+      <p>Based in Ahmedabad — a city with a rich tradition of thoughtful craftsmanship and climatic ingenuity — the practice draws deeply from its context while reaching toward a global conversation about experiential architecture.</p>
+    </div>
+    <div class="fcts rev">
+      <div class="fc"><span class="fcl">Email</span><span class="fcv"><a href="mailto:yashchandwani625@gmail.com">yashchandwani625@gmail.com</a></span></div>
+      <div class="fc"><span class="fcl">Phone</span><span class="fcv"><a href="tel:+917489762855">+91 74897 62855</a></span></div>
+      <div class="fc"><span class="fcl">Studio</span><span class="fcv">Ahmedabad, Gujarat, India</span></div>
+      <div class="fc"><span class="fcl">Est.</span><span class="fcv">2025</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <div class="slabel rev">Contact <span style="color:var(--muted);margin-left:auto;font-size:.48rem">06 / 06</span></div>
+    <h2 class="cth rev">Let's Build<br>Something<br><em>Remarkable.</em></h2>
+    <p class="ctp rev">Every extraordinary building begins with a conversation. Share your project vision — we'll bring the architecture, craft, and expertise to realise it.</p>
+    <div class="ctmeta rev">
+      <div class="cm"><span class="cml">Studio</span><span class="cmv">Fifth Facade Studio<br>Ahmedabad, Gujarat, India</span></div>
+      <div class="cm"><span class="cml">Founder</span><span class="cmv">Yash Chandwani · Principal Architect</span></div>
+      <div class="cm"><span class="cml">Email</span><span class="cmv"><a href="mailto:yashchandwani625@gmail.com">yashchandwani625@gmail.com</a></span></div>
+      <div class="cm"><span class="cml">Phone</span><span class="cmv"><a href="tel:+917489762855">+91 74897 62855</a></span></div>
+      <div class="cm"><span class="cml">Hours</span><span class="cmv">Monday – Saturday &nbsp;·&nbsp; 10:00 AM – 7:00 PM IST</span></div>
+    </div>
+  </div>
+  <div class="cform rev">
+    <div class="frow">
+      <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 00000 00000"></div>
+      <div class="fg"><label>Service Required</label>
+        <select><option value="" disabled selected>Select a service</option>
+          <option>Architectural Design Consultancy</option>
+          <option>Concept & Form Development</option>
+          <option>Technical Spatial Planning</option>
+          <option>Bioclimatic Consultation</option>
+          <option>Interior Experience Design</option>
+          <option>General Enquiry</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Project Location</label><input type="text" placeholder="City, State, India"></div>
+    <div class="fg"><label>Project Brief</label><textarea rows="5" placeholder="Describe your project, vision, and timeline..."></textarea></div>
+    <button class="fsub" onclick="submitForm(event)">Send Enquiry &nbsp;→</button>
+    <p id="thanks">✓ &nbsp;Thank you — we'll be in touch within 48 hours.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftop">
+    <div>
+      <svg width="46" height="46" viewBox="0 0 44 44" fill="none">
+        <rect x="1" y="1" width="42" height="42" stroke="rgba(201,168,76,0.18)" stroke-width="0.5"/>
+        <rect x="4" y="4" width="36" height="36" fill="#0e0e0e"/>
+        <rect x="10" y="22" width="24" height="16" fill="#191919" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <path d="M8 22 L22 10 L36 22" fill="#c9a84c"/>
+        <line x1="15" y1="22" x2="22" y2="10" stroke="#0e0e0e" stroke-width="0.7" opacity="0.5"/>
+        <line x1="29" y1="22" x2="22" y2="10" stroke="#0e0e0e" stroke-width="0.7" opacity="0.5"/>
+        <rect x="12" y="25" width="4" height="4" fill="rgba(201,168,76,0.38)"/>
+        <rect x="20" y="25" width="4" height="4" fill="rgba(201,168,76,0.16)"/>
+        <rect x="28" y="25" width="4" height="4" fill="rgba(201,168,76,0.16)"/>
+        <rect x="18" y="31" width="8" height="7" fill="rgba(201,168,76,0.52)"/>
+        <path d="M4 4 L4 9 M4 4 L9 4" stroke="#c9a84c" stroke-width="1"/>
+        <path d="M40 4 L40 9 M40 4 L35 4" stroke="#c9a84c" stroke-width="1"/>
+        <path d="M4 40 L4 35 M4 40 L9 40" stroke="#c9a84c" stroke-width="1"/>
+        <path d="M40 40 L40 35 M40 40 L35 40" stroke="#c9a84c" stroke-width="1"/>
+      </svg>
+      <div class="fbn">Fifth Facade Studio</div>
+      <div class="fbt">Where Roofs Become Experience.</div>
+      <p class="fba">A design-led architectural consultancy reimagining the roof as the most expressive layer of built form. Ahmedabad, India. Est. 2025.</p>
+    </div>
+    <div>
+      <div class="fct">Navigation</div>
+      <ul class="flinks">
+        <li><a href="#about">Philosophy</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#focus">Focus Areas</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#founder">Studio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Get In Touch</div>
+      <ul class="flinks">
+        <li><a href="mailto:yashchandwani625@gmail.com">yashchandwani625@gmail.com</a></li>
+        <li><a href="tel:+917489762855">+91 74897 62855</a></li>
+        <li style="color:var(--muted);font-size:.83rem;font-weight:300">Ahmedabad, Gujarat, India</li>
+        <li style="color:var(--muted);font-size:.83rem;font-weight:300">Mon–Sat · 10am – 7pm IST</li>
+      </ul>
+      <div style="margin-top:2rem">
+        <div class="fct">Services</div>
+        <ul class="flinks">
+          <li><a href="#services">Architectural Design</a></li>
+          <li><a href="#services">Bioclimatic Consultation</a></li>
+          <li><a href="#services">Spatial Planning</a></li>
+          <li><a href="#services">Interior Design</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="fbot">
+    <p class="fcp">© 2025 Fifth Facade Studio · Yash Chandwani · Ahmedabad, Gujarat, India. All Rights Reserved.</p>
+    <p class="fcp">Architecture as a Cultural Act.</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{ setTimeout(()=>document.getElementById('loader').classList.add('hide'),2100); });
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ac(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.querySelectorAll('a,button,.svc,.fi').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';cur2.style.width='48px';cur2.style.height='48px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';cur2.style.width='32px';cur2.style.height='32px';});
+});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('s',window.scrollY>80));
+function toggleNav(){document.getElementById('nl').classList.toggle('open');}
+document.getElementById('nl').querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nl').classList.remove('open')));
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
+document.querySelectorAll('.rev,.pi,.fi').forEach(el=>io.observe(el));
+function submitForm(e){
+  e.preventDefault();const b=e.target;b.textContent='Sending...';b.disabled=true;
+  setTimeout(()=>{b.style.display='none';document.getElementById('thanks').style.display='block';},1500);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});
+});
+</script>
+</body>
+</html>
